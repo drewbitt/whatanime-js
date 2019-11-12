@@ -1,9 +1,11 @@
 'use strict';
 
 module.exports = {
-  TRACE_HOST_DOMAIN: 'https://trace.moe',
+  TRACE_HOST_DOMAIN: 'https://trace.moe/api',
   TRACE_SEARCH_QUERY_PATH: '/search',
+  TRACE_SEARCH_QUERY_URL_PATH: '/search?url=',
   TRACE_INFO_QUERY_PATH: '/info',
+  // TODO: Add /me and support api key usage
 
   FORMAT_SUPPORTED: ['jpeg', 'jpg', 'png', 'bmp', 'gif', 'wbmp'],
 

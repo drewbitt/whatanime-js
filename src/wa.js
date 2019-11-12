@@ -1,13 +1,13 @@
 'use strict';
 
 const {
-  getSearchResultFromBinding,
-  downloadFileURL
+  getSearchResultFromBinding
 } = require('./utils');
 
 const {
   TRACE_HOST_DOMAIN,
   TRACE_SEARCH_QUERY_PATH,
+  TRACE_SEARCH_QUERY_URL_PATH,
   TRACE_INFO_QUERY_PATH,
   FORMAT_SUPPORTED,
   HEADERS,
@@ -69,13 +69,20 @@ function searchAnimeWithURL(url) {
   if (!REGEX_VALIDATION_URL.test(url)) {
     return Promise.reject(new Error(`This is URL not valid: ${url}`));
   }
-  return downloadFileURL(url)
-    .then(filePath => {
-      return searchAnime(filePath);
+  const options = {
+    method: "GET"
+  };
+  return axios(`${TRACE_HOST_DOMAIN}${TRACE_SEARCH_QUERY_URL_PATH}` + url, options)
+    .then(res => {
+      return getSearchResultFromBinding(res.data);
     })
     .catch(err => {
-      return err;
-    });
+      if (err.response) {
+        throw err.response.data;
+      } else {
+        throw err.message;
+      }
+    })
 }
 
 function getInfo(anilistId) {
@@ -96,6 +103,7 @@ function getInfo(anilistId) {
       }
     });
 }
+
 
 module.exports = {
   searchAnime,
