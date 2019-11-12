@@ -6,9 +6,9 @@ const {
 
 const {
   TRACE_HOST_DOMAIN,
+  TRACE_HOST_API_DOMAIN,
   TRACE_SEARCH_QUERY_PATH,
   TRACE_SEARCH_QUERY_URL_PATH,
-  TRACE_INFO_QUERY_PATH,
   FORMAT_SUPPORTED,
   HEADERS,
   REGEX_VALIDATION_URL
@@ -52,7 +52,7 @@ function searchAnime(imagePath, filter = null, trial = 0) {
     headers: HEADERS,
     data: payload
   };
-  return axios(`${TRACE_HOST_DOMAIN}${TRACE_SEARCH_QUERY_PATH}`, options)
+  return axios(`${TRACE_HOST_API_DOMAIN}${TRACE_SEARCH_QUERY_PATH}`, options)
     .then(res => {
       return getSearchResultFromBinding(res.data);
     })
@@ -70,9 +70,10 @@ function searchAnimeWithURL(url) {
     return Promise.reject(new Error(`This is URL not valid: ${url}`));
   }
   const options = {
-    method: "GET"
+    method: 'GET',
+    headers: { 'User-Agent': HEADERS['User-Agent'] }
   };
-  return axios(`${TRACE_HOST_DOMAIN}${TRACE_SEARCH_QUERY_URL_PATH}` + url, options)
+  return axios(`${TRACE_HOST_API_DOMAIN}${TRACE_SEARCH_QUERY_URL_PATH}` + url, options)
     .then(res => {
       return getSearchResultFromBinding(res.data);
     })
@@ -84,26 +85,6 @@ function searchAnimeWithURL(url) {
       }
     })
 }
-
-function getInfo(anilistId) {
-  const options = {
-    method: 'GET',
-    headers: { 'User-Agent': HEADERS['User-Agent'] },
-    params: { 'anilist_id': anilistId }
-  };
-  return axios(`${TRACE_HOST_DOMAIN}${TRACE_INFO_QUERY_PATH}`, options)
-    .then(res => {
-      return res.data
-    })
-    .catch(err => {
-      if (err.response) {
-        throw err.response.data;
-      } else {
-        throw err.message;
-      }
-    });
-}
-
 
 module.exports = {
   searchAnime,

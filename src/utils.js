@@ -1,7 +1,8 @@
 'use strict';
 
 const {
-  TRACE_HOST_DOMAIN
+  TRACE_HOST_DOMAIN,
+  TRACE_MEDIA_DOMAIN
 } = require('./constants');
 
 
@@ -36,9 +37,12 @@ function getSearchResultFromBinding(json) {
 
   if (docs.length > 0) {
     for (let doc of docs) {
+      const encodedURI = encodeURIComponent(doc.filename);
       let newKey = {
-        'imagepreview': `${TRACE_HOST_DOMAIN}/thumbnail.php?anilist_id=${doc.anilist_id}&file=${doc.file}&t=${doc.t}&token=${doc.tokenthumb}`,
-        'videopreview': `${TRACE_HOST_DOMAIN}/${doc.anilist_id}/${doc.file}?start=${doc.start}&end=${doc.end}&token=${doc.token}`
+        'imagepreview': `${TRACE_HOST_DOMAIN}/thumbnail.php?anilist_id=${doc.anilist_id}&file=${encodedURI}&t=${doc.at}&token=${doc.tokenthumb}`,
+        'videopreview': `${TRACE_HOST_DOMAIN}/preview.php?anilist_id=${doc.anilist_id}&file=${encodedURI}&t=${doc.at}&token=${doc.tokenthumb}`,
+        'naturalvideopreview': `${TRACE_MEDIA_DOMAIN}/video/${doc.anilist_id}/${encodedURI}?t=${doc.at}&token=${doc.tokenthumb}`,
+        'naturalvideopreviewmute': `${TRACE_MEDIA_DOMAIN}/video/${doc.anilist_id}/${encodedURI}?t=${doc.at}&token=${doc.tokenthumb}&mute`
       };
       Object.assign(doc, newKey);
     }
