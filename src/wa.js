@@ -87,6 +87,5 @@ function searchAnimeWithURL(url) {
 
 module.exports = {
   searchAnime,
-  searchAnimeWithURL,
-  getInfo
+  searchAnimeWithURL
 };
