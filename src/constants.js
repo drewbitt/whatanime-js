@@ -6,7 +6,6 @@ module.exports = {
   TRACE_MEDIA_DOMAIN: 'https://media.trace.moe',
   TRACE_SEARCH_QUERY_PATH: '/search',
   TRACE_SEARCH_QUERY_URL_PATH: '/search?url=',
-  TRACE_INFO_QUERY_PATH: '/anime/'
   // TODO: Add /me and support api key usage
 
   FORMAT_SUPPORTED: ['jpeg', 'jpg', 'png', 'bmp', 'gif', 'wbmp'],

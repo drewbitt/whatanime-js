@@ -5,7 +5,6 @@ const {
 } = require('./utils');
 
 const {
-  TRACE_HOST_DOMAIN,
   TRACE_HOST_API_DOMAIN,
   TRACE_SEARCH_QUERY_PATH,
   TRACE_SEARCH_QUERY_URL_PATH,
