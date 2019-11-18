@@ -17,9 +17,8 @@ const axios = require('axios');
 const fileType = require('file-type');
 const fs = require('fs');
 const readChunk = require('read-chunk');
-const qs = require('qs');
 
-function searchAnime(imagePath, filter = null, trial = 0) {
+function searchAnime(imagePath) {
   if (!fs.existsSync(imagePath)) {
     return Promise.reject(new Error(`The system cannot find the path specified: '${imagePath}'`));
   }
@@ -41,15 +40,14 @@ function searchAnime(imagePath, filter = null, trial = 0) {
   const encImgToB64 = fs.readFileSync(imagePath, 'base64');
   const imgFormatB64 = `data:image/jpeg;base64,${encImgToB64}`;
   const buffer = Buffer.from(imgFormatB64.substring(imgFormatB64.indexOf(',') + 1));
-  const bufferSize = Math.floor(buffer.length / 1024 ** 2);
+  const bufferSize = Math.floor(buffer.length / (1024 ** 2) * 10);
   if (!bufferSize < 1) {
-    return Promise.reject(new Error('You should ensure your Base64 encoded image is < 1MB'));
+    return Promise.reject(new Error('You should ensure your Base64 encoded image is < 10MB'));
   }
-  const payload = qs.stringify({ 'data': imgFormatB64, 'filter': filter, 'trial': trial });
   const options = {
     method: "POST",
     headers: HEADERS,
-    data: payload
+    data: JSON.stringify({ image: imgFormatB64 })
   };
   return axios(`${TRACE_HOST_API_DOMAIN}${TRACE_SEARCH_QUERY_PATH}`, options)
     .then(res => {
